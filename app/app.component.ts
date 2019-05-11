@@ -10,30 +10,33 @@ from '@angular/core';
 })
 export class AppComponent implements OnInit {
     result = 0;
+    size=6;
     ngOnInit() {
 
         //this.drawEnemies();
         var Coordx = [];
         var Coordy = [];
-        for (let i = 0; i < 8; i++) {
-            Coordx[i] = Math.floor(Math.random() * 8);
-            Coordy[i] = Math.floor(Math.random() * 8);
+        for (let i = 0; i < this.size; i++) {
+            Coordx[i] = Math.floor(Math.random() * this.size);
+            Coordy[i] = Math.floor(Math.random() * this.size);
             console.log(Coordx)
         }
         this.drawRectable();
 
-        this.drawUser(Coordx, Coordy);
-    }
-    name = 'Angular 5';
+        this.drawUser(Coordx, Coordy,this.size);
+    }//END OF on INIT
+   
 
-    drawUser(Coordx, Coordy) {
-
+    drawUser(Coordx, Coordy,size) {
+      var img = document.getElementById("img");
+      var user=document.getElementById("userimg");
+  
         //create emenies
         var cenemy = document.getElementById("enemy");
         var ctxEnemy = cenemy.getContext("2d");
-        for (let i = 0; i < 8; i++) {
-            ctxEnemy.fillStyle = "#FF0000";
-            ctxEnemy.fillRect(Coordx[i] * 70, Coordy[i] * 70, 70, 70);
+        for (let i = 0; i < this.size; i++) {
+            //ctxEnemy.fillStyle = "#FF0000";
+            ctxEnemy.drawImage(img,Coordx[i] * 70, Coordy[i] * 70, 70, 70);
         }
 
         //cUser
@@ -43,39 +46,39 @@ export class AppComponent implements OnInit {
         var yPos = 0;
         var count = 0;
         var moves = 0;
-        ctxUser.fillRect(xPos, yPos, 70, 70)
+        ctxUser.drawImage(user,xPos, yPos, 70, 70)
 
         function move(e) {
             moves++;
             if (moves == 30)
                 alert('you lost')
 
-            if (e.keyCode == 39 && xPos < 70 * 7) {
+            if (e.keyCode == 39 && xPos < 70 * (size-1)) {
                 xPos += 70;
                 ctxUser.clearRect(xPos - 70, yPos, 70, 70)
-                ctxUser.fillRect(xPos, yPos, 70, 70);
+                ctxUser.drawImage(user,xPos, yPos, 70, 70);
             }
             if (e.keyCode == 37 && xPos > 0) {
                 xPos -= 70;
                 ctxUser.clearRect(xPos + 70, yPos, 70, 70)
-                ctxUser.fillRect(xPos, yPos, 70, 70);
+                ctxUser.drawImage(user,xPos, yPos, 70, 70);
             }
-            if (e.keyCode == 40 && yPos < 70 * 7) {
+            if (e.keyCode == 40 && yPos < 70 * (size-1)) {
                 yPos += 70;
                 ctxUser.clearRect(xPos, yPos - 70, 70, 70)
-                ctxUser.fillRect(xPos, yPos, 70, 70);
+                ctxUser.drawImage(user,xPos, yPos, 70, 70);
             }
             if (e.keyCode == 38 && yPos > 0) {
                 yPos -= 70;
                 ctxUser.clearRect(xPos, yPos + 70, 70, 70)
-                ctxUser.fillRect(xPos, yPos, 70, 70);
+                ctxUser.drawImage(user,xPos, yPos, 70, 70);
             }
             //cUser.width = cUser.width;
 
             if (deleteEnemy(Coordx, Coordy)) {
                 count++;
                 console.log("hy count" + count)
-                if (count == 8) {
+                if (count ==size) {
                     alert('you won')
                 }
             }
@@ -84,7 +87,7 @@ export class AppComponent implements OnInit {
 
         function deleteEnemy(Coordx, Coordy) {
             let flag = false;
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i < size; i++) {
 
                 if (Coordx[i] * 70 == xPos && Coordy[i] * 70 == yPos) {
                     ctxEnemy.clearRect(xPos, yPos, 70, 70)
@@ -103,19 +106,19 @@ export class AppComponent implements OnInit {
         var c = document.getElementById("stage");
         var ctx = c.getContext("2d");
 
-        for (var i = 0; i < 8; i++) {
-            for (var j = 0; j < 8; j++) {
+        for (var i = 0; i < this.size; i++) {
+            for (var j = 0; j < this.size; j++) {
                 ctx.moveTo(0, 70 * j);
-                ctx.lineTo(560, 70 * j);
+                ctx.lineTo(70 * j, 70 * j);
                 ctx.stroke();
 
                 ctx.moveTo(70 * i, 0);
-                ctx.lineTo(70 * i, 560);
+                ctx.lineTo(70 * i, 70 * j);
                 ctx.strokeStyle = "#F0F8FF"
                 ctx.stroke();
                 var left = 0;
-                for (var a = 0; a < 8; a++) {
-                    for (var b = 0; b < 8; b += 2) {
+                for (var a = 0; a < this.size; a++) {
+                    for (var b = 0; b < this.size; b += 2) {
                         let startX = b * 70;
                         if (a % 2 == 0) startX = (b + 1) * 70;
                         ctx.fillStyle = "#F0F8FF";
