@@ -1,11 +1,50 @@
+<nav class="navbar navbar-light bg-dark">
+  <a class="navbar-brand text-white" href="#">Checkers Game</a>
+</nav>
+
 <div class="container">
   <div class="row">
-    <div class="col-md-2"></div>
+    <div class="col-md-4 mt-3 p-2">
+      <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+  <div class="card-header">Fill the details to start</div>
+  <div class="card-body bg-dark">
+    <h5 class="card-title">Fill the Details and press start</h5>
+  <form [formGroup]='loginForm' (ngSubmit)='save()'>
+               
+                   <div class="form-group">
+                          <label for="exampleInputPassword1">Size of Board</label>
+                         <select name="duration" formControlName='size'> 
+                         <option *ngFor="let size of Size" [value]="size">{{size}}</option> 
+                            </select> 
+                          <small *ngIf="size.touched && size.hasError('required')">Size is required</small>
+                          
+                      </div>
+  
+                  
+                      <div class="form-group">
+                          <label for="exampleInputPassword1">Difficulty</label>
+                         <select name="duration" formControlName='difficulty'> 
+                         <option *ngFor="let dif of tough" [value]="dif">{{dif}}</option> 
+                            </select> 
+                          <small *ngIf="difficulty.touched && difficulty.hasError('required')">Difficulty is required</small>
+                          
+                      </div>
+  
+                  <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                  <button type="submit" [disabled]='!loginForm.valid' class="btn btn-primary" >Start</button>
+                  </div>
+              </form>
+  </div>
+</div>
+      
+    </div>
 <div class="col-md-8">
-  <button  class="btn btn-primary m-3" (click)="start()">start game</button>
-  <div class="card m-3 p-2">
+  
+  <div class="m-3 p-2">
+<div *ngIf='flag'>
+  <app-game size='{{Gamesize}}' Gamedifficulty='{{Gamedifficulty}}' ></app-game>
+</div>
 
-<app-game size='8'></app-game>
 
 
   </div>

@@ -5,11 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { HelloComponent } from './hello.component';
 import { GameComponent } from './game/game.component';
+
+import {ReactiveFormsModule} from '@angular/forms';
 const routes: Routes = [
   {path:'game',component:GameComponent}
 ];
 @NgModule({
-  imports:      [ BrowserModule, FormsModule ,RouterModule.forRoot(routes)],
+  imports:      [ BrowserModule, ReactiveFormsModule,FormsModule ,RouterModule.forRoot(routes)],
   declarations: [ AppComponent, HelloComponent, GameComponent ],
   bootstrap:    [ AppComponent ]
 })
