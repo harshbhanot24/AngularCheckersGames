@@ -1,31 +1,60 @@
 import { Component, OnInit } from '@angular/core';
-
+import {Input } from '@angular/core';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit {
+  @Input('size') size;
 result = 0;
-    size=6;
+   
     ngOnInit() {
-
-        //this.drawEnemies();
-        var Coordx = [];
+     this.start();
+    }//END OF on INIT
+   reset(){
+     let cUser = document.getElementById("user");
+      let cenemy = document.getElementById("enemy");
+      let stage = document.getElementById("stage");
+      stage.width=stage.width;
+      cenemy.width=cenemy.width;
+      cUser.width=cUser.width;
+     console.log("resest callced")
+     this.start();
+   }
+   createRandom(){
+     var Coordx = [];
         var Coordy = [];
         for (let i = 0; i < this.size; i++) {
             Coordx[i] = Math.floor(Math.random() * this.size);
             Coordy[i] = Math.floor(Math.random() * this.size);
-            console.log(Coordx)
+            
         }
-        this.drawRectable();
+        let flag=false;
+      for(let i=0;i<this.size;i++){
+        for(let j=i+1;j<this.size;j++){
+            if(Coordx[i]==Coordx[j] && Coordy[i]==Coordy[j]){
+                flag=true;
+            }
+        }
+      }
+      if(flag){
+        console.log('creating random')
+        this.createRandom();
+      }
+        return [Coordx,Coordy]
+   }
+start(){
+ console.log("size is "+this.size)
+        //this.drawEnemies();
         
+        this.drawRectable();
+        let RandomXY=this.createRandom();
 
-        this.drawUser(Coordx, Coordy,this.size);
-    }//END OF on INIT
-   
-
+        this.drawUser(RandomXY[0], RandomXY[1],this.size);
+}
     drawUser(Coordx, Coordy,size) {
+      let resetFlag=false;
       var img = document.getElementById("img");
       var user=document.getElementById("userimg");
   
@@ -33,7 +62,7 @@ result = 0;
         var cenemy = document.getElementById("enemy");
         var ctxEnemy = cenemy.getContext("2d");
         for (let i = 0; i < this.size; i++) {
-            //ctxEnemy.fillStyle = "#FF0000";
+            
             ctxEnemy.drawImage(img,Coordx[i] * 70, Coordy[i] * 70, 70, 70);
         }
 
@@ -78,11 +107,14 @@ result = 0;
                 console.log("hy count" + count)
                 if (count ==size) {
                     alert('you won')
+                    resetFlag=true;
                 }
             }
 
         }
-
+    if(resetFlag)
+    this.reset();
+    }
         function deleteEnemy(Coordx, Coordy) {
             let flag = false;
             for (let i = 0; i < size; i++) {
@@ -96,8 +128,7 @@ result = 0;
             return flag;
         }
         document.onkeydown = move;
-
-    }
+  
 
     drawRectable() {
 
@@ -125,18 +156,6 @@ result = 0;
                 }
             }
         }
-
-        // var canvas = document.getElementById('stage');
-        // if (canvas.getContext) {
-        //   var ctx = canvas.getContext('2d');
-
-        //   ctx.fillStyle = "#D74022";
-        //   ctx.fillRect(25, 25, 150, 150);
-
-        //   ctx.fillStyle = "rgba(0,0,0,0.5)";
-        //   ctx.clearRect(60, 60, 120, 120);
-        //   ctx.strokeRect(90, 90, 80, 80);
-        // }
 
     }
 

@@ -3,6 +3,7 @@ p {
 }
 canvas{
   position: absolute;
-  top:20px;
-  left:10px;
+  top:8em;
+  left:auto;
+  right:auto;
 }
